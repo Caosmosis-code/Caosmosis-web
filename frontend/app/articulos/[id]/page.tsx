@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
+import Comentarios from "@/components/Comentarios";
 
 interface Articulo {
   id: number;
@@ -64,36 +65,55 @@ export default function ArticuloDetallePage() {
   const puedeEditar = usuario && (usuario.id === articulo.autorId || usuario.rol === "ADMIN");
 
   return (
-    <article className="max-w-2xl mx-auto px-4 py-8">
-      <span className="text-xs text-gray-500">{articulo.categoria}</span>
-      <h1 className="text-3xl font-semibold mt-1 mb-2">{articulo.titulo}</h1>
-      <p className="text-sm text-gray-500 mb-4">
-        {articulo.autorNombre} · {fecha} · {articulo.tiempoLectura} min de lectura
-      </p>
+    <>
+      <article className="max-w-2xl mx-auto px-4 py-8">
+        <span className="text-xs text-gray-500">{articulo.categoria}</span>
+        <h1 className="text-3xl font-semibold mt-1 mb-2">{articulo.titulo}</h1>
+        <p className="text-sm text-gray-500 mb-4">
+          <Link href={`/autor/${articulo.autorId}`} className="hover:text-brass transition-colors">
+            {articulo.autorNombre}
+          </Link> · {fecha} · {articulo.tiempoLectura} min de lectura
+        </p>
 
-      {puedeEditar && (
-        <div className="flex gap-3 mb-6">
-          <Link
-            href={`/admin/articulos/${articulo.id}/editar`}
-            className="text-sm border rounded-md px-3 py-1 hover:bg-gray-50"
-          >
-            Editar
-          </Link>
-          <button
-            onClick={handleEliminar}
-            disabled={eliminando}
-            className="text-sm border rounded-md px-3 py-1 text-red-600 hover:bg-red-50 disabled:opacity-50"
-          >
-            {eliminando ? "Eliminando..." : "Eliminar"}
-          </button>
+        {puedeEditar && (
+          <div className="flex gap-3 mb-6">
+            <Link
+              href={`/admin/articulos/${articulo.id}/editar`}
+              className="text-sm border rounded-md px-3 py-1 hover:bg-gray-50"
+            >
+              Editar
+            </Link>
+            <button
+              onClick={handleEliminar}
+              disabled={eliminando}
+              className="text-sm border rounded-md px-3 py-1 text-red-600 hover:bg-red-50 disabled:opacity-50"
+            >
+              {eliminando ? "Eliminando..." : "Eliminar"}
+            </button>
+          </div>
+        )}
+
+        {articulo.imagenUrl && (
+          <img src={articulo.imagenUrl} alt={articulo.titulo} className="w-full rounded-lg mb-6" />
+        )}
+
+        <div className="bg-paper border border-graphite/15 rounded-sm shadow-sm px-6 py-10 md:px-12 md:py-14">
+          {articulo.contenido
+            .split(/\n\s*\n/)
+            .filter((p) => p.trim())
+            .map((parrafo, i) => (
+              <p
+                key={i}
+                className={`font-display text-[19px] leading-[1.85] text-justify mb-6 last:mb-0 ${i === 0 ? "drop-cap" : ""
+                  }`}
+              >
+                {parrafo.trim()}
+              </p>
+            ))}
         </div>
-      )}
+      </article>
 
-      {articulo.imagenUrl && (
-        <img src={articulo.imagenUrl} alt={articulo.titulo} className="w-full rounded-lg mb-6" />
-      )}
-
-      <div className="whitespace-pre-wrap leading-relaxed">{articulo.contenido}</div>
-    </article>
+      <Comentarios articuloId={articulo.id} />
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { Fraunces, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -41,6 +42,11 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
+        </AuthProvider>
+        <AuthProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
         </AuthProvider>
       </body>
     </html>

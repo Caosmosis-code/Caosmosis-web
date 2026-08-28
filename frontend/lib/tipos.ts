@@ -12,3 +12,13 @@ export interface Articulo {
   esPortada: boolean;
   comentarioRevision: string | null;
 }
+export interface Comentario {
+  id: number;
+  contenido: string;
+  usuarioNombre: string;
+  usuarioId: number;
+  fecha: string;
+  comentarioPadreId: number | null;
+  cantidadLikes: number;
+  likeadoPorMi: boolean;
+}
