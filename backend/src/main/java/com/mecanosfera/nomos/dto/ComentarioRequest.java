@@ -1,0 +1,12 @@
+package com.mecanosfera.nomos.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+@Data
+public class ComentarioRequest {
+    @NotBlank(message = "El comentario no puede estar vacío")
+    private String contenido;
+
+    private Long comentarioPadreId;
+}
