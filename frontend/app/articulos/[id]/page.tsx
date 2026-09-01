@@ -97,19 +97,22 @@ export default function ArticuloDetallePage() {
           <img src={articulo.imagenUrl} alt={articulo.titulo} className="w-full rounded-lg mb-6" />
         )}
 
-        <div className="bg-paper border border-graphite/15 rounded-sm shadow-sm px-6 py-10 md:px-12 md:py-14">
-          {articulo.contenido
-            .split(/\n\s*\n/)
-            .filter((p) => p.trim())
-            .map((parrafo, i) => (
-              <p
-                key={i}
-                className={`font-display text-[19px] leading-[1.85] text-justify mb-6 last:mb-0 ${i === 0 ? "drop-cap" : ""
-                  }`}
-              >
-                {parrafo.trim()}
-              </p>
-            ))}
+        <div className="bg-paper border border-graphite/15 rounded-sm shadow-sm px-5 py-8 md:px-14 md:py-16">
+          <div className="max-w-[65ch] mx-auto overflow-hidden">
+            {articulo.contenido
+              .split(/\n+/)
+              .map((p) => p.trim())
+              .filter(Boolean)
+              .map((parrafo, i) => (
+                <p
+                  key={i}
+                  className={`font-display text-[17px] md:text-[19px] leading-[1.9] mb-6 last:mb-0 ${i === 0 ? "drop-cap" : ""
+                    }`}
+                >
+                  {parrafo}
+                </p>
+              ))}
+          </div>
         </div>
       </article>
 
