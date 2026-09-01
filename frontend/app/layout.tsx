@@ -42,10 +42,6 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
-        </AuthProvider>
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
           <Footer />
         </AuthProvider>
       </body>

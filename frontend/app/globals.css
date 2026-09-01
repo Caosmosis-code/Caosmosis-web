@@ -15,14 +15,15 @@
 
 body {
   font-family: var(--font-body), sans-serif;
-    .drop-cap::first-letter {
-  font-family: var(--font-display);
-  font-size: 3.6em;
-  line-height: 0.75;
-  float: left;
-  padding-right: 0.1em;
-  padding-top: 0.05em;
-  color: var(--color-brass);
-  font-weight: 600;
+
+  .drop-cap::first-letter {
+    font-family: var(--font-display);
+    font-size: 3.2em;
+    line-height: 0.8;
+    float: left;
+    padding-right: 0.08em;
+    padding-top: 0.08em;
+    color: var(--color-brass);
+    font-weight: 600;
   }
 }
