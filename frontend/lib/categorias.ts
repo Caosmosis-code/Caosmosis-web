@@ -1,1 +1,1 @@
-export const CATEGORIAS = ["Tecnología", "Cultura", "Ciencia", "Opinión", "Actualidad"];
+export const CATEGORIAS = ["Tecnología", "Cultura", "Ciencia", "Opinión", "Actualidad", "Deportes"];

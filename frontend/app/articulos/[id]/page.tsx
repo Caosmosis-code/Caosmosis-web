@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { apiFetch } from "@/lib/api";
 import Comentarios from "@/components/Comentarios";
+import BarraProgreso from "@/components/BarraProgreso";
+import BotonCompartir from "@/components/BotonCompartir";
 
 interface Articulo {
   id: number;
@@ -66,6 +68,7 @@ export default function ArticuloDetallePage() {
 
   return (
     <>
+      <BarraProgreso />
       <article className="max-w-2xl mx-auto px-4 py-8">
         <span className="text-xs text-gray-500">{articulo.categoria}</span>
         <h1 className="text-3xl font-semibold mt-1 mb-2">{articulo.titulo}</h1>
@@ -75,23 +78,26 @@ export default function ArticuloDetallePage() {
           </Link> · {fecha} · {articulo.tiempoLectura} min de lectura
         </p>
 
-        {puedeEditar && (
-          <div className="flex gap-3 mb-6">
-            <Link
-              href={`/admin/articulos/${articulo.id}/editar`}
-              className="text-sm border rounded-md px-3 py-1 hover:bg-gray-50"
-            >
-              Editar
-            </Link>
-            <button
-              onClick={handleEliminar}
-              disabled={eliminando}
-              className="text-sm border rounded-md px-3 py-1 text-red-600 hover:bg-red-50 disabled:opacity-50"
-            >
-              {eliminando ? "Eliminando..." : "Eliminar"}
-            </button>
-          </div>
-        )}
+        <div className="flex gap-3 mb-6 items-center flex-wrap">
+          {puedeEditar && (
+            <>
+              <Link
+                href={`/admin/articulos/${articulo.id}/editar`}
+                className="text-sm border rounded-md px-3 py-1 hover:bg-gray-50"
+              >
+                Editar
+              </Link>
+              <button
+                onClick={handleEliminar}
+                disabled={eliminando}
+                className="text-sm border rounded-md px-3 py-1 text-red-600 hover:bg-red-50 disabled:opacity-50"
+              >
+                {eliminando ? "Eliminando..." : "Eliminar"}
+              </button>
+            </>
+          )}
+          <BotonCompartir titulo={articulo.titulo} />
+        </div>
 
         {articulo.imagenUrl && (
           <img src={articulo.imagenUrl} alt={articulo.titulo} className="w-full rounded-lg mb-6" />
@@ -106,13 +112,16 @@ export default function ArticuloDetallePage() {
               .map((parrafo, i) => (
                 <p
                   key={i}
-                  className={`font-display text-[17px] md:text-[19px] leading-[1.9] mb-6 last:mb-0 ${i === 0 ? "drop-cap" : ""
-                    }`}
+                  className="font-display text-[17px] md:text-[19px] leading-[1.9] mb-6 last:mb-0"
                 >
                   {parrafo}
                 </p>
               ))}
           </div>
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <BotonCompartir titulo={articulo.titulo} />
         </div>
       </article>
 

@@ -14,7 +14,9 @@ export default function RevisionDetallePage() {
   const [articulo, setArticulo] = useState<Articulo | null>(null);
   const [cargando, setCargando] = useState(true);
   const [mostrarRechazo, setMostrarRechazo] = useState(false);
+  const [mostrarProgramar, setMostrarProgramar] = useState(false);
   const [comentario, setComentario] = useState("");
+  const [fechaProgramada, setFechaProgramada] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,11 +33,16 @@ export default function RevisionDetallePage() {
       .finally(() => setCargando(false));
   }, [params.id, usuario]);
 
-  async function aprobar() {
+  async function aprobar(fecha?: string) {
     setEnviando(true);
     setError(null);
     try {
-      await apiFetch(`/api/articulos/${params.id}/aprobar`, { method: "PUT" });
+      await apiFetch(`/api/articulos/${params.id}/aprobar`, {
+        method: "PUT",
+        body: JSON.stringify({
+          fechaPublicacionProgramada: fecha || null,
+        }),
+      });
       router.push("/admin/revision");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "No se pudo publicar el artículo.");
@@ -73,14 +80,21 @@ export default function RevisionDetallePage() {
 
       {error && <p className="text-rust text-sm mb-4">{error}</p>}
 
-      {!mostrarRechazo ? (
+      {!mostrarRechazo && !mostrarProgramar && (
         <div className="flex gap-3 flex-wrap">
           <button
-            onClick={aprobar}
+            onClick={() => aprobar()}
             disabled={enviando}
             className="bg-ink text-chalk rounded-full px-5 py-2 font-mono text-xs uppercase tracking-wide disabled:opacity-50"
           >
-            Publicar
+            Publicar ahora
+          </button>
+          <button
+            onClick={() => setMostrarProgramar(true)}
+            disabled={enviando}
+            className="border border-brass text-brass rounded-full px-5 py-2 font-mono text-xs uppercase tracking-wide disabled:opacity-50"
+          >
+            Programar publicación
           </button>
           <button
             onClick={() => setMostrarRechazo(true)}
@@ -96,7 +110,38 @@ export default function RevisionDetallePage() {
             Editar antes de publicar
           </Link>
         </div>
-      ) : (
+      )}
+
+      {mostrarProgramar && (
+        <div className="border border-brass/30 rounded-lg p-4">
+          <label className="font-mono text-xs uppercase tracking-wide text-brass block mb-2">
+            ¿Cuándo se publica?
+          </label>
+          <input
+            type="datetime-local"
+            value={fechaProgramada}
+            onChange={(e) => setFechaProgramada(e.target.value)}
+            className="border rounded-md px-3 py-2 mb-3"
+          />
+          <div className="flex gap-3">
+            <button
+              onClick={() => aprobar(fechaProgramada)}
+              disabled={enviando || !fechaProgramada}
+              className="bg-brass text-chalk rounded-full px-5 py-2 font-mono text-xs uppercase tracking-wide disabled:opacity-50"
+            >
+              Confirmar
+            </button>
+            <button
+              onClick={() => setMostrarProgramar(false)}
+              className="font-mono text-xs uppercase tracking-wide text-graphite/50"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {mostrarRechazo && (
         <div className="border border-rust/30 rounded-lg p-4">
           <label className="font-mono text-xs uppercase tracking-wide text-rust block mb-2">
             ¿Qué hay que cambiar?
