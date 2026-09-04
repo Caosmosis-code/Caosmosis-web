@@ -1,5 +1,6 @@
 package com.mecanosfera.nomos.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,5 +15,6 @@ public interface ArticuloRepository extends JpaRepository<Articulo, Long> {
     List<Articulo> findByEstadoAndCategoriaOrderByFechaPublicacionDesc(EstadoArticulo estado, String categoria);
     List<Articulo> findByAutorIdOrderByFechaPublicacionDesc(Long autorId);
     List<Articulo> findByAutorIdAndEstadoOrderByFechaPublicacionDesc(Long autorId, EstadoArticulo estado);
+    List<Articulo> findByEstadoAndFechaPublicacionProgramadaLessThanEqual(EstadoArticulo estado, LocalDateTime fecha);
     Optional<Articulo> findByEsPortadaTrue();
 }

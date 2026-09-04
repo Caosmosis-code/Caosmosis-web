@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mecanosfera.nomos.dto.AprobacionRequest;
 import com.mecanosfera.nomos.dto.ArticuloRequest;
 import com.mecanosfera.nomos.dto.ArticuloResponse;
 import com.mecanosfera.nomos.dto.RechazoRequest;
@@ -69,7 +70,8 @@ public class ArticuloController {
     public ResponseEntity<List<ArticuloResponse>> listar(@RequestParam(required = false) String categoria) {
         List<Articulo> articulos = (categoria == null || categoria.isBlank())
                 ? articuloRepository.findByEstadoOrderByFechaPublicacionDesc(EstadoArticulo.PUBLICADO)
-                : articuloRepository.findByEstadoAndCategoriaOrderByFechaPublicacionDesc(EstadoArticulo.PUBLICADO, categoria);
+                : articuloRepository.findByEstadoAndCategoriaOrderByFechaPublicacionDesc(EstadoArticulo.PUBLICADO,
+                        categoria);
 
         List<ArticuloResponse> respuesta = articulos.stream()
                 .sorted(Comparator.comparing(Articulo::isEsPortada).reversed()
@@ -154,13 +156,24 @@ public class ArticuloController {
 
     @PutMapping("/{id}/aprobar")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ArticuloResponse> aprobar(@PathVariable Long id) {
+    public ResponseEntity<ArticuloResponse> aprobar(@PathVariable Long id,
+            @RequestBody(required = false) AprobacionRequest request) {
+
         Articulo articulo = articuloRepository.findById(id)
                 .orElseThrow(ArticuloNoEncontradoException::new);
 
-        articulo.setEstado(EstadoArticulo.PUBLICADO);
+        LocalDateTime fechaProgramada = request != null ? request.getFechaPublicacionProgramada() : null;
+
+        if (fechaProgramada != null && fechaProgramada.isAfter(LocalDateTime.now())) {
+            articulo.setEstado(EstadoArticulo.PROGRAMADO);
+            articulo.setFechaPublicacionProgramada(fechaProgramada);
+        } else {
+            articulo.setEstado(EstadoArticulo.PUBLICADO);
+            articulo.setFechaPublicacion(LocalDateTime.now());
+            articulo.setFechaPublicacionProgramada(null);
+        }
+
         articulo.setComentarioRevision(null);
-        articulo.setFechaPublicacion(LocalDateTime.now());
 
         Articulo actualizado = articuloRepository.save(articulo);
         return ResponseEntity.ok(ArticuloResponse.desde(actualizado));
@@ -168,7 +181,8 @@ public class ArticuloController {
 
     @PutMapping("/{id}/rechazar")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ArticuloResponse> rechazar(@PathVariable Long id, @Valid @RequestBody RechazoRequest request) {
+    public ResponseEntity<ArticuloResponse> rechazar(@PathVariable Long id,
+            @Valid @RequestBody RechazoRequest request) {
         Articulo articulo = articuloRepository.findById(id)
                 .orElseThrow(ArticuloNoEncontradoException::new);
 

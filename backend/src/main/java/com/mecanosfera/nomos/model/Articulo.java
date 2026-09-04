@@ -57,4 +57,7 @@ public class Articulo {
 
     @Column(name = "comentario_revision", columnDefinition = "TEXT")
     private String comentarioRevision;
+
+    @Column(name = "fecha_publicacion_programada")
+    private LocalDateTime fechaPublicacionProgramada;
 }
