@@ -35,6 +35,9 @@ public class ArticuloResponse {
         dto.setEstado(articulo.getEstado().name());
         dto.setEsPortada(articulo.isEsPortada());
         dto.setComentarioRevision(articulo.getComentarioRevision());
+        dto.setAutorEmail(articulo.getAutor().getEmail());
+        dto.setAutorInstagram(articulo.getAutor().getInstagram());
+        dto.setAutorTwitter(articulo.getAutor().getTwitter());
         return dto;
     }
 }

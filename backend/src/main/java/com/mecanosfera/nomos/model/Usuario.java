@@ -43,4 +43,10 @@ public class Usuario {
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+    @Column
+    private String instagram;
+
+    @Column
+    private String twitter;
 }
