@@ -11,6 +11,9 @@ export interface Articulo {
   estado: "PENDIENTE" | "PUBLICADO" | "RECHAZADO";
   esPortada: boolean;
   comentarioRevision: string | null;
+  autorEmail: string | null;
+  autorInstagram: string | null;
+  autorTwitter: string | null;
 }
 export interface Comentario {
   id: number;

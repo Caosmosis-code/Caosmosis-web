@@ -39,22 +39,28 @@ function formatearFecha(fecha: string) {
 function ComentarioItem({
   comentario,
   articuloId,
-  usuarioLogueado,
+  usuarioActual,
   onRespondido,
   onLikeToggle,
+  onEliminado,
   nivel = 0,
 }: {
   comentario: ComentarioConHijos;
   articuloId: number;
-  usuarioLogueado: boolean;
+  usuarioActual: { id: number; rol: string } | null;
   onRespondido: () => void;
   onLikeToggle: (id: number) => void;
+  onEliminado: () => void;
   nivel?: number;
 }) {
   const [respondiendo, setRespondiendo] = useState(false);
   const [texto, setTexto] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [likeEnviando, setLikeEnviando] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
+
+  const puedeEliminar =
+    usuarioActual && (usuarioActual.id === comentario.usuarioId || usuarioActual.rol === "ADMIN");
 
   async function enviarRespuesta(e: React.FormEvent) {
     e.preventDefault();
@@ -70,7 +76,7 @@ function ComentarioItem({
       setRespondiendo(false);
       onRespondido();
     } catch {
-      // silencioso, el form queda visible para reintentar
+      // silencioso
     } finally {
       setEnviando(false);
     }
@@ -90,6 +96,21 @@ function ComentarioItem({
     }
   }
 
+  async function eliminar() {
+    if (!confirm("¿Eliminar este comentario? Sus respuestas también se van a borrar.")) return;
+
+    setEliminando(true);
+    try {
+      await apiFetch(`/api/articulos/${articuloId}/comentarios/${comentario.id}`, {
+        method: "DELETE",
+      });
+      onEliminado();
+    } catch (err) {
+      alert(err instanceof ApiError ? err.message : "No se pudo eliminar el comentario.");
+      setEliminando(false);
+    }
+  }
+
   return (
     <div className={nivel > 0 ? "ml-6 pl-4 border-l border-graphite/15" : ""}>
       <div className="pb-4">
@@ -104,7 +125,7 @@ function ComentarioItem({
         <div className="flex items-center gap-4">
           <button
             onClick={toggleLike}
-            disabled={!usuarioLogueado || likeEnviando}
+            disabled={!usuarioActual || likeEnviando}
             className={`font-mono text-xs flex items-center gap-1 transition-colors ${
               comentario.likeadoPorMi ? "text-brass" : "text-graphite/50 hover:text-brass"
             } disabled:opacity-40 disabled:cursor-not-allowed`}
@@ -113,12 +134,22 @@ function ComentarioItem({
             <span>{comentario.cantidadLikes}</span>
           </button>
 
-          {usuarioLogueado && nivel < 2 && (
+          {usuarioActual && nivel < 2 && (
             <button
               onClick={() => setRespondiendo((v) => !v)}
               className="font-mono text-xs text-graphite/50 hover:text-brass transition-colors"
             >
               {respondiendo ? "Cancelar" : "Responder"}
+            </button>
+          )}
+
+          {puedeEliminar && (
+            <button
+              onClick={eliminar}
+              disabled={eliminando}
+              className="font-mono text-xs text-graphite/50 hover:text-rust transition-colors disabled:opacity-50"
+            >
+              {eliminando ? "Eliminando..." : "Eliminar"}
             </button>
           )}
         </div>
@@ -150,9 +181,10 @@ function ComentarioItem({
               key={hijo.id}
               comentario={hijo}
               articuloId={articuloId}
-              usuarioLogueado={usuarioLogueado}
+              usuarioActual={usuarioActual}
               onRespondido={onRespondido}
               onLikeToggle={onLikeToggle}
+              onEliminado={onEliminado}
               nivel={nivel + 1}
             />
           ))}
@@ -216,6 +248,7 @@ export default function Comentarios({ articuloId }: { articuloId: number }) {
 
   const arbol = armarArbol(comentarios);
   const totalComentarios = comentarios.length;
+  const usuarioActual = usuario ? { id: usuario.id, rol: usuario.rol } : null;
 
   return (
     <section className="max-w-2xl mx-auto px-4 pb-16">
@@ -260,9 +293,10 @@ export default function Comentarios({ articuloId }: { articuloId: number }) {
               key={c.id}
               comentario={c}
               articuloId={articuloId}
-              usuarioLogueado={!!usuario}
+              usuarioActual={usuarioActual}
               onRespondido={cargar}
               onLikeToggle={handleLikeToggle}
+              onEliminado={cargar}
             />
           ))}
         </div>

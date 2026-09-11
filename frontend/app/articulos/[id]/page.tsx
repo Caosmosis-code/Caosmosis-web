@@ -16,6 +16,9 @@ interface Articulo {
   categoria: string;
   autorNombre: string;
   autorId: number;
+  autorEmail: string | null;
+  autorInstagram: string | null;
+  autorTwitter: string | null;
   fechaPublicacion: string;
   tiempoLectura: number;
   imagenUrl: string | null;
@@ -72,11 +75,42 @@ export default function ArticuloDetallePage() {
       <article className="max-w-2xl mx-auto px-4 py-8">
         <span className="text-xs text-gray-500">{articulo.categoria}</span>
         <h1 className="text-3xl font-semibold mt-1 mb-2">{articulo.titulo}</h1>
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm text-gray-500 mb-6">
+          Por{" "}
           <Link href={`/autor/${articulo.autorId}`} className="hover:text-brass transition-colors">
             {articulo.autorNombre}
           </Link> · {fecha} · {articulo.tiempoLectura} min de lectura
         </p>
+
+        {(articulo.autorEmail || articulo.autorInstagram || articulo.autorTwitter) && (
+          <div className="flex gap-4 mb-6 font-mono text-xs uppercase tracking-wide text-graphite/60">
+            {articulo.autorEmail && (
+              <a href={`mailto:${articulo.autorEmail}`} className="hover:text-brass transition-colors">
+                Mail
+              </a>
+            )}
+            {articulo.autorInstagram && (
+              
+                href={`https://instagram.com/${articulo.autorInstagram.replace("@", "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-brass transition-colors"
+              >
+                Instagram
+              </a>
+            )}
+            {articulo.autorTwitter && (
+              
+                href={`https://x.com/${articulo.autorTwitter.replace("@", "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-brass transition-colors"
+              >
+                X
+              </a>
+            )}
+          </div>
+        )}
 
         <div className="flex gap-3 mb-6 items-center flex-wrap">
           {puedeEditar && (

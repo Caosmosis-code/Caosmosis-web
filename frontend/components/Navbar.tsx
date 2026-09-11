@@ -28,6 +28,9 @@ export default function Navbar() {
             <Link href="/mis-articulos" className="hover:text-brass transition-colors whitespace-nowrap">
               Mis artículos
             </Link>
+            <Link href="/perfil" className="hover:text-brass transition-colors whitespace-nowrap">
+              Mi perfil
+            </Link>
             {usuario?.rol === "ADMIN" && (
               <>
                 <Link href="/admin/revision" className="hover:text-brass transition-colors whitespace-nowrap">
