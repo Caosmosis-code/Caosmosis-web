@@ -90,7 +90,7 @@ export default function ArticuloDetallePage() {
               </a>
             )}
             {articulo.autorInstagram && (
-              
+              <a
                 href={`https://instagram.com/${articulo.autorInstagram.replace("@", "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -100,7 +100,7 @@ export default function ArticuloDetallePage() {
               </a>
             )}
             {articulo.autorTwitter && (
-              
+              <a
                 href={`https://x.com/${articulo.autorTwitter.replace("@", "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
