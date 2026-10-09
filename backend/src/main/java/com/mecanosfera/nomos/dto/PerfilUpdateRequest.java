@@ -7,4 +7,5 @@ public class PerfilUpdateRequest {
     private String bio;
     private String instagram;
     private String twitter;
+    private boolean contactoPublico;
 }

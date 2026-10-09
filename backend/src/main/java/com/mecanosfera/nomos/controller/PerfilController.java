@@ -42,6 +42,7 @@ public class PerfilController {
         usuario.setBio(request.getBio());
         usuario.setInstagram(request.getInstagram());
         usuario.setTwitter(request.getTwitter());
+        usuario.setContactoPublico(request.isContactoPublico());
 
         Usuario actualizado = usuarioRepository.save(usuario);
         return ResponseEntity.ok(PerfilResponse.desde(actualizado));

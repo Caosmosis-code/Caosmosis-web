@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mecanosfera.nomos.dto.AprobacionRequest;
+import com.mecanosfera.nomos.dto.ArticuloEstadisticaResponse;
 import com.mecanosfera.nomos.dto.ArticuloRequest;
 import com.mecanosfera.nomos.dto.ArticuloResponse;
 import com.mecanosfera.nomos.dto.RechazoRequest;
 import com.mecanosfera.nomos.exception.ArticuloNoEncontradoException;
 import com.mecanosfera.nomos.model.Articulo;
+import com.mecanosfera.nomos.model.Comentario;
 import com.mecanosfera.nomos.model.EstadoArticulo;
 import com.mecanosfera.nomos.model.Rol;
 import com.mecanosfera.nomos.model.Usuario;
 import com.mecanosfera.nomos.repository.ArticuloRepository;
+import com.mecanosfera.nomos.repository.ComentarioRepository;
 import com.mecanosfera.nomos.repository.UsuarioRepository;
 
 import jakarta.validation.Valid;
@@ -38,10 +41,35 @@ public class ArticuloController {
 
     private final ArticuloRepository articuloRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ComentarioRepository comentarioRepository;
 
-    public ArticuloController(ArticuloRepository articuloRepository, UsuarioRepository usuarioRepository) {
+    public ArticuloController(ArticuloRepository articuloRepository, UsuarioRepository usuarioRepository,
+            ComentarioRepository comentarioRepository) {
         this.articuloRepository = articuloRepository;
         this.usuarioRepository = usuarioRepository;
+        this.comentarioRepository = comentarioRepository;
+    }
+
+    @GetMapping("/mios/estadisticas")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<ArticuloEstadisticaResponse>> misEstadisticas(Authentication authentication) {
+        Usuario actual = usuarioRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado"));
+
+        List<Articulo> articulos = articuloRepository.findByAutorIdOrderByFechaPublicacionDesc(actual.getId());
+
+        List<ArticuloEstadisticaResponse> respuesta = articulos.stream()
+                .map(articulo -> {
+                    long cantComentarios = comentarioRepository.countByArticuloId(articulo.getId());
+                    int cantLikes = comentarioRepository.findByArticuloIdOrderByFechaAsc(articulo.getId())
+                            .stream()
+                            .mapToInt(Comentario::getCantidadLikes)
+                            .sum();
+                    return ArticuloEstadisticaResponse.desde(articulo, cantComentarios, cantLikes);
+                })
+                .toList();
+
+        return ResponseEntity.ok(respuesta);
     }
 
     @PostMapping
