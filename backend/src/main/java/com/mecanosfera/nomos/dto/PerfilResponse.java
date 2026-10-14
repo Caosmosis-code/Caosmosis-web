@@ -12,7 +12,6 @@ public class PerfilResponse {
     private String bio;
     private String instagram;
     private String twitter;
-    private boolean contactoPublico;
 
     public static PerfilResponse desde(Usuario usuario) {
         PerfilResponse dto = new PerfilResponse();
@@ -22,7 +21,6 @@ public class PerfilResponse {
         dto.setBio(usuario.getBio());
         dto.setInstagram(usuario.getInstagram());
         dto.setTwitter(usuario.getTwitter());
-        dto.setContactoPublico(usuario.isContactoPublico());
         return dto;
     }
 }

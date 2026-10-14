@@ -1,16 +1,18 @@
-
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM maven:3.9-eclipse-temurin-26 AS build
 
 WORKDIR /app
-COPY . .
-RUN chmod +x mvnw && sed -i 's/\r$//' mvnw
+
+COPY pom.xml .
+COPY src ./src
+
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:26-jre
 
 WORKDIR /app
+
 COPY --from=build /app/target/*.jar app.jar
 
-EXPOSE 8080
+EXPOSE 10000
 
-ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
+CMD ["java", "-jar", "app.jar"]

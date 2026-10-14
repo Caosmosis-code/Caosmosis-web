@@ -13,14 +13,12 @@ public class AutorResponse {
     private String twitter;
 
     public static AutorResponse desde(Usuario usuario) {
-    AutorResponse dto = new AutorResponse();
-    dto.setId(usuario.getId());
-    dto.setNombre(usuario.getNombre());
-    dto.setBio(usuario.getBio());
-    if (usuario.isContactoPublico()) {
+        AutorResponse dto = new AutorResponse();
+        dto.setId(usuario.getId());
+        dto.setNombre(usuario.getNombre());
+        dto.setBio(usuario.getBio());
         dto.setInstagram(usuario.getInstagram());
         dto.setTwitter(usuario.getTwitter());
+        return dto;
     }
-    return dto;
-}
 }

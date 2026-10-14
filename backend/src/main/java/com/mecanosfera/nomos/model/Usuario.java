@@ -44,9 +44,6 @@ public class Usuario {
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    @Column(name = "contacto_publico", nullable = false)
-    private boolean contactoPublico = true;
-
     @Column
     private String instagram;
 
