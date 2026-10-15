@@ -30,4 +30,18 @@ npm run dev
 Levanta en `http://localhost:3000`
 
 ## Variables de entorno
-Cada carpeta (`backend/`, `frontend/`) necesita su propio `.env` (no versionado). Ver `.env.example` en cada una (pendiente de crear).
+
+Configura estas variables en el proveedor de despliegue. Para desarrollo local, usa archivos `.env` no versionados.
+
+Backend:
+- `SPRING_DATASOURCE_URL`
+- `SPRING_DATASOURCE_USERNAME`
+- `SPRING_DATASOURCE_PASSWORD`
+- `JWT_SECRET` (mínimo 32 bytes para HS256)
+- `APP_CORS_ALLOWED_ORIGINS` (origen del frontend, por ejemplo `https://tu-sitio.example`)
+- `PORT` (opcional; por defecto `10000`)
+
+Frontend:
+- `NEXT_PUBLIC_API_URL` (URL pública HTTPS del backend, sin barra final)
+
+En Vercel, configura `frontend/` como Root Directory. El backend debe construirse con `backend/` como contexto Docker.

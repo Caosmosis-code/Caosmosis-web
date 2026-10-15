@@ -1,6 +1,13 @@
 import Cookies from "js-cookie";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "development" ? "http://localhost:8080" : "");
+
+export function getApiUrl(): string {
+  if (!API_URL) {
+    throw new Error("Falta configurar NEXT_PUBLIC_API_URL para este entorno.");
+  }
+  return API_URL;
+}
 
 interface ApiOptions extends RequestInit {
   skipAuth?: boolean;
@@ -20,7 +27,7 @@ export async function apiFetch<T>(endpoint: string, options: ApiOptions = {}): P
     finalHeaders["Authorization"] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const response = await fetch(`${getApiUrl()}${endpoint}`, {
     ...rest,
     headers: finalHeaders,
   });

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/context/AuthContext";
 import { articuloSchema, ArticuloFormData } from "@/lib/validaciones";
-import { apiFetch, ApiError } from "@/lib/api";
+import { apiFetch, ApiError, getApiUrl } from "@/lib/api";
 import Cookies from "js-cookie";
 import { CATEGORIAS } from "@/lib/categorias";
 
@@ -46,9 +46,7 @@ export default function NuevoArticuloPage() {
       formData.append("archivo", archivo);
 
       const token = Cookies.get("token");
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-
-      const response = await fetch(`${API_URL}/api/archivos/extraer-texto`, {
+      const response = await fetch(`${getApiUrl()}/api/archivos/extraer-texto`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

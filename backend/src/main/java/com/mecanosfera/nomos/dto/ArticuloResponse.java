@@ -14,6 +14,8 @@ public class ArticuloResponse {
     private String categoria;
     private String autorNombre;
     private Long autorId;
+    private String autorInstagram;
+    private String autorTwitter;
     private LocalDateTime fechaPublicacion;
     private String imagenUrl;
     private Integer tiempoLectura;
@@ -35,7 +37,6 @@ public class ArticuloResponse {
         dto.setEstado(articulo.getEstado().name());
         dto.setEsPortada(articulo.isEsPortada());
         dto.setComentarioRevision(articulo.getComentarioRevision());
-        dto.setAutorEmail(articulo.getAutor().getEmail());
         dto.setAutorInstagram(articulo.getAutor().getInstagram());
         dto.setAutorTwitter(articulo.getAutor().getTwitter());
         return dto;
