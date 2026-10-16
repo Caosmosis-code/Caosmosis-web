@@ -9,6 +9,7 @@ import com.mecanosfera.nomos.model.Like;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByUsuarioIdAndComentarioId(Long usuarioId, Long comentarioId);
+    Optional<Like> findByVisitorKeyAndComentarioId(String visitorKey, Long comentarioId);
     List<Like> findByUsuarioIdAndComentarioIdIn(Long usuarioId, List<Long> comentarioIds);
     long deleteByComentarioId(Long comentarioId);
 }

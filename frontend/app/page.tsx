@@ -1,205 +1,73 @@
-"use client";
-
-import { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { apiFetch } from "@/lib/api";
+import ArticleImage from "@/components/ArticleImage";
+import ArticleCard from "@/components/ArticleCard";
+import { NewsletterForm, SectionHeading } from "@/components/EditorialUI";
+import { Parallax, Reveal } from "@/components/EditorialMotion";
+import { articleHref, authorHref, slugify } from "@/lib/editorial";
+import { getArticles } from "@/lib/server-data";
 import { CATEGORIAS } from "@/lib/categorias";
 
-interface Articulo {
-  id: number;
-  titulo: string;
-  categoria: string;
-  autorNombre: string;
-  fechaPublicacion: string;
-  tiempoLectura: number;
-  imagenUrl: string | null;
-}
-
-function Portada({ articulo }: { articulo: Articulo }) {
-  return (
-    <Link href={`/articulos/${articulo.id}`} className="group block relative">
-      {/* marcas de esquina — firma visual */}
-      <span className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-brass" />
-      <span className="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 border-brass" />
-      <span className="absolute -bottom-2 -left-2 w-4 h-4 border-b-2 border-l-2 border-brass" />
-      <span className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-brass" />
-
-      <div className="relative overflow-hidden bg-ink aspect-[16/8]">
-        {articulo.imagenUrl ? (
-          <img
-            src={articulo.imagenUrl}
-            alt={articulo.titulo}
-            className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="font-mono text-chalk/40 text-xs uppercase tracking-[0.2em]">
-              {articulo.categoria}
-            </span>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6">
-          <span className="font-mono text-brass text-xs uppercase tracking-[0.15em]">
-            Portada · {articulo.categoria}
-          </span>
-          <h2 className="font-display text-chalk text-2xl md:text-3xl mt-1 leading-tight">
-            {articulo.titulo}
-          </h2>
-          <p className="font-mono text-chalk/60 text-xs mt-2">
-            {articulo.autorNombre} · {articulo.tiempoLectura} min
-          </p>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function ArticuloCard({ articulo }: { articulo: Articulo }) {
-  return (
-    <Link href={`/articulos/${articulo.id}`} className="group block">
-      <div className="relative overflow-hidden bg-ink/90 aspect-[16/10] mb-3">
-        {articulo.imagenUrl ? (
-          <img
-            src={articulo.imagenUrl}
-            alt={articulo.titulo}
-            className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="font-mono text-chalk/30 text-[10px] uppercase tracking-[0.2em]">
-              {articulo.categoria}
-            </span>
-          </div>
-        )}
-      </div>
-      <span className="font-mono text-brass text-[11px] uppercase tracking-[0.15em]">
-        {articulo.categoria}
-      </span>
-      <h3 className="font-display text-lg leading-snug mt-1 group-hover:text-brass transition-colors">
-        {articulo.titulo}
-      </h3>
-      <p className="font-mono text-graphite/50 text-xs mt-1.5">
-        {articulo.autorNombre} · {articulo.tiempoLectura} min
-      </p>
-    </Link>
-  );
-}
-
-function HomeContent() {
-  const [articulos, setArticulos] = useState<Articulo[]>([]);
-  const [cargando, setCargando] = useState(true);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const categoriaActiva = searchParams.get("categoria") || "";
-
-  useEffect(() => {
-    setCargando(true);
-    const query = categoriaActiva ? `?categoria=${encodeURIComponent(categoriaActiva)}` : "";
-    apiFetch<Articulo[]>(`/api/articulos${query}`, { skipAuth: true })
-      .then(setArticulos)
-      .finally(() => setCargando(false));
-  }, [categoriaActiva]);
-
-  function seleccionarCategoria(categoria: string) {
-    if (categoria === categoriaActiva) {
-      router.push("/");
-    } else {
-      router.push(`/?categoria=${encodeURIComponent(categoria)}`);
-    }
-  }
-
-  const [portada, ...resto] = articulos;
+export default async function HomePage() {
+  const articles = await getArticles();
+  const [lead, ...rest] = articles;
+  const latest = lead ? rest : [];
 
   return (
-    <div>
-      {/* Hero */}
-      <section
-        className="relative bg-ink px-4 py-16 md:py-24"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, rgba(237,230,214,0.05) 0 1px, transparent 1px 48px), repeating-linear-gradient(90deg, rgba(237,230,214,0.05) 0 1px, transparent 1px 48px)",
-        }}
-      >
-        <div className="max-w-3xl mx-auto text-center">
-          <span className="font-mono text-brass text-xs uppercase tracking-[0.25em]">
-            Archivo de artículos
-          </span>
-          <h1 className="font-display text-chalk text-4xl md:text-6xl mt-3 leading-[1.05]">
-            Caosmosis
-          </h1>
-          <p className="font-body text-chalk/60 mt-4 text-base md:text-lg max-w-lg mx-auto">
-            Notas, análisis y discusión — organizados como piezas de un mismo mecanismo.
-          </p>
+    <>
+      <section className="masthead-wrap">
+        <div className="masthead shell">
+          <p className="eyebrow">Ideas para entender lo que nos pasa</p>
+          <h1>Una revista para <em>pensar en voz alta.</em></h1>
+          <p className="masthead-deck">Cultura, ciencia y tecnología contadas con tiempo, contexto y curiosidad.</p>
+          <div className="masthead-meta"><span>Lectura abierta</span><span>·</span><span>Hecha en Argentina</span></div>
         </div>
       </section>
 
-      {/* Filtro de categorías */}
-      <div className="border-b border-graphite/15 bg-paper sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto">
-          <button
-            onClick={() => router.push("/")}
-            className={`font-mono text-xs uppercase tracking-wide px-3 py-1.5 rounded-full border whitespace-nowrap transition-colors ${
-              !categoriaActiva
-                ? "bg-ink text-chalk border-ink"
-                : "border-graphite/25 hover:border-brass hover:text-brass"
-            }`}
-          >
-            Todas
-          </button>
-          {CATEGORIAS.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => seleccionarCategoria(cat)}
-              className={`font-mono text-xs uppercase tracking-wide px-3 py-1.5 rounded-full border whitespace-nowrap transition-colors ${
-                categoriaActiva === cat
-                  ? "bg-ink text-chalk border-ink"
-                  : "border-graphite/25 hover:border-brass hover:text-brass"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+      {lead && <section className="shell lead-story" aria-labelledby="lead-title">
+        <Reveal className="lead-image-wrap">
+          <Parallax className="lead-image-parallax"><Link href={articleHref(lead)} className="lead-image-link" aria-label={`Leer ${lead.titulo}`}>
+            <ArticleImage src={lead.imagenUrl} alt="" priority />
+            <span className="lead-image-label">La historia de hoy</span>
+          </Link></Parallax>
+        </Reveal>
+        <Reveal className="lead-copy" delay={0.08}>
+          <Link href={`/categoria/${slugify(lead.categoria)}`} className="category-label">{lead.categoria}</Link>
+          <h2 id="lead-title"><Link href={articleHref(lead)}>{lead.titulo}</Link></h2>
+          <p className="lead-excerpt">{lead.excerpt ?? lead.contenido.split(/\n+/)[0]}</p>
+          <div className="byline"><span>Por <Link href={authorHref(lead)}>{lead.autorNombre}</Link></span><span>{lead.tiempoLectura} min de lectura</span></div>
+          <Link className="text-link" href={articleHref(lead)}>Leer la nota <span aria-hidden="true">↗</span></Link>
+        </Reveal>
+      </section>}
+
+      <section className="shell latest-section">
+        <SectionHeading eyebrow="En la revista" title="Lo último" href="/buscar" linkLabel="Explorar notas" />
+        {latest.length ? <div className="article-grid article-grid-three">
+          {latest.slice(0, 3).map((article, index) => <Reveal key={article.id} delay={index * 0.06}><ArticleCard article={article} /></Reveal>)}
+        </div> : <p className="empty-state">Todavía no hay más notas. Volvé pronto.</p>}
+      </section>
+
+      <section className="subscribe-band" id="newsletter">
+        <div className="shell subscribe-inner">
+          <div><p className="eyebrow">Una pausa en tu inbox</p><h2>Buenas ideas, sin ruido.</h2><p>Recibí nuestra selección editorial y novedades de la comunidad.</p></div>
+          <NewsletterForm />
         </div>
-      </div>
+      </section>
 
-      {/* Contenido */}
-      <div className="max-w-5xl mx-auto px-4 py-10">
-        {cargando ? (
-          <p className="font-mono text-sm text-graphite/50 text-center py-12">Cargando…</p>
-        ) : articulos.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="font-display text-xl">Todavía no hay artículos acá.</p>
-            <p className="font-mono text-xs text-graphite/50 mt-2 uppercase tracking-wide">
-              {categoriaActiva ? `Nada en "${categoriaActiva}" por ahora` : "El archivo está vacío"}
-            </p>
+      {CATEGORIAS.map((category) => {
+        const categoryItems = articles.filter((article) => article.categoria.toLowerCase() === category.toLowerCase()).slice(0, 2);
+        if (!categoryItems.length) return null;
+        return <section className="shell category-section" key={category}>
+          <SectionHeading eyebrow="Una mirada más de cerca" title={category} href={`/categoria/${slugify(category)}`} />
+          <div className="article-grid article-grid-two">
+            {categoryItems.map((article) => <Reveal key={article.id}><ArticleCard article={article} /></Reveal>)}
           </div>
-        ) : (
-          <>
-            {portada && (
-              <div className="mb-12">
-                <Portada articulo={portada} />
-              </div>
-            )}
-            {resto.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10">
-                {resto.map((articulo) => (
-                  <ArticuloCard key={articulo.id} articulo={articulo} />
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
+        </section>;
+      })}
 
-export default function HomePage() {
-  return (
-    <Suspense fallback={<p className="text-center py-12 font-mono text-sm">Cargando…</p>}>
-      <HomeContent />
-    </Suspense>
+      {lead && <section className="shell editors-note">
+        <div><p className="eyebrow">La comunidad Caosmosis</p><h2>Leer es el comienzo de la conversación.</h2><p>Las notas están abiertas. Sumate a comentar, compartir una pregunta o proponer una idea.</p></div>
+        <Link href={articleHref(lead)} className="button button-outline">Entrar a la conversación <span aria-hidden="true">↗</span></Link>
+      </section>}
+    </>
   );
 }

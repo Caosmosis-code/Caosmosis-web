@@ -1,63 +1,28 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { apiFetch } from "@/lib/api";
-import { Articulo } from "@/lib/tipos";
+import ArticleCard from "@/components/ArticleCard";
+import { Reveal } from "@/components/EditorialMotion";
+import { SectionHeading } from "@/components/EditorialUI";
+import { articleHref } from "@/lib/editorial";
+import { getAuthor } from "@/lib/server-data";
 
-interface Autor {
-  id: number;
-  nombre: string;
-  bio: string | null;
+type Props = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getAuthor(id);
+  return { title: data?.author.nombre ?? "Autor no encontrado", description: data?.author.bio ?? "Perfil de autor en Caosmosis." };
 }
 
-export default function PerfilAutorPage() {
-  const params = useParams();
-  const [autor, setAutor] = useState<Autor | null>(null);
-  const [articulos, setArticulos] = useState<Articulo[]>([]);
-  const [cargando, setCargando] = useState(true);
+export default async function PerfilAutorPage({ params }: Props) {
+  const { id: slug } = await params;
+  const data = await getAuthor(slug);
+  if (!data) return <div className="shell page-intro"><p className="eyebrow">Caosmosis</p><h1>Autor no encontrado</h1><Link className="text-link" href="/">Volver a la portada</Link></div>;
+  const { author, articles } = data;
+  const initials = author.nombre.split(/\s+/).map((part) => part[0]).slice(0, 2).join("").toUpperCase();
 
-  useEffect(() => {
-    Promise.all([
-      apiFetch<Autor>(`/api/autores/${params.id}`, { skipAuth: true }),
-      apiFetch<Articulo[]>(`/api/autores/${params.id}/articulos`, { skipAuth: true }),
-    ])
-      .then(([a, arts]) => {
-        setAutor(a);
-        setArticulos(arts);
-      })
-      .finally(() => setCargando(false));
-  }, [params.id]);
-
-  if (cargando) return <p className="text-center py-8 font-mono text-sm">Cargando…</p>;
-  if (!autor) return <p className="text-center py-8 font-mono text-sm">Autor no encontrado.</p>;
-
-  return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <h1 className="font-display text-3xl mb-2">{autor.nombre}</h1>
-      {autor.bio ? (
-        <p className="font-body text-graphite/70 max-w-lg mb-8">{autor.bio}</p>
-      ) : (
-        <p className="font-mono text-xs text-graphite/40 uppercase tracking-wide mb-8">Sin biografía</p>
-      )}
-
-      <h2 className="font-mono text-xs uppercase tracking-wide text-graphite/50 mb-4">
-        Artículos publicados ({articulos.length})
-      </h2>
-
-      {articulos.length === 0 ? (
-        <p className="font-mono text-sm text-graphite/50">Todavía no publicó nada.</p>
-      ) : (
-        <div className="space-y-4">
-          {articulos.map((a) => (
-            <Link key={a.id} href={`/articulos/${a.id}`} className="block border-b border-graphite/10 pb-4">
-              <span className="font-mono text-brass text-[11px] uppercase tracking-wide">{a.categoria}</span>
-              <h3 className="font-display text-lg mt-1">{a.titulo}</h3>
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <>
+    <section className="shell author-profile"><div className="author-avatar" aria-hidden="true">{initials}</div><div><p className="eyebrow">Voces de la revista</p><h1>{author.nombre}</h1><p>{author.bio || "Colaborador/a de Caosmosis."}</p></div></section>
+    <section className="shell listing-grid"><SectionHeading eyebrow="Archivo personal" title={`${articles.length} ${articles.length === 1 ? "nota publicada" : "notas publicadas"}`} />{articles.length ? <div className="article-grid article-grid-three">{articles.map((article) => <Reveal key={article.id}><ArticleCard article={article} /></Reveal>)}</div> : <p className="empty-state">Todavía no hay notas publicadas de esta persona.</p>}</section>
+  </>;
 }

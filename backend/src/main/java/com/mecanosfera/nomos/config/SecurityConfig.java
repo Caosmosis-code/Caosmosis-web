@@ -50,6 +50,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/admin/comentarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/articulos/*/comentarios", "/api/articulos/*/comentarios/*/like").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/articulos").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/articulos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/articulos/*/comentarios").permitAll()

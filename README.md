@@ -45,3 +45,5 @@ Frontend:
 - `NEXT_PUBLIC_API_URL` (URL pública HTTPS del backend, sin barra final)
 
 En Vercel, configura `frontend/` como Root Directory. El backend debe construirse con `backend/` como contexto Docker.
+
+Los comentarios anónimos se guardan como pendientes de moderación. Antes de desplegar esta versión sobre una base existente, aplica una vez `backend/schema-editorial.sql` a PostgreSQL. Los comentarios anteriores pasan a estado aprobado; las nuevas tablas y columnas se mantienen también en el modelo JPA.

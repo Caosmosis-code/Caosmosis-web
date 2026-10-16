@@ -16,9 +16,11 @@ export interface Comentario {
   id: number;
   contenido: string;
   usuarioNombre: string;
-  usuarioId: number;
+  usuarioId: number | null;
   fecha: string;
   comentarioPadreId: number | null;
   cantidadLikes: number;
   likeadoPorMi: boolean;
+  estado?: "PENDIENTE" | "APROBADO" | "RECHAZADO";
+  articuloId?: number;
 }

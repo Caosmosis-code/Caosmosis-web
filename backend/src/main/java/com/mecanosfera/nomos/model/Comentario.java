@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,8 +30,14 @@ public class Comentario {
     private String contenido;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @Column(name = "autor_nombre", length = 80)
+    private String autorNombre;
+
+    @Column(name = "autor_email", length = 180)
+    private String autorEmail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "articulo_id", nullable = false)
@@ -44,4 +52,8 @@ public class Comentario {
 
     @Column(name = "cantidad_likes", nullable = false)
     private int cantidadLikes = 0;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(20) default 'APROBADO'")
+    private EstadoComentario estado = EstadoComentario.PENDIENTE;
 }

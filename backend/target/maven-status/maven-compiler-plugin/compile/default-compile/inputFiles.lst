@@ -1,21 +1,44 @@
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\config\SecurityConfig.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\controller\ArchivoController.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\controller\ArticuloController.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\controller\AuthController.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\dto\ArticuloRequest.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\dto\ArticuloResponse.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\dto\LoginRequest.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\dto\LoginResponse.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\dto\RegistroRequest.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\dto\UsuarioResponse.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\exception\EmailYaRegistradoException.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\exception\GlobalExceptionHandler.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\MecanosferaApplication.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\model\Articulo.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\model\Rol.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\model\Usuario.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\repository\ArticuloRepository.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\repository\UsuarioRepository.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\security\CustomUserDetailsService.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\security\JwtAuthenticationFilter.java
-C:\Users\Fede\Desktop\Nomos\0.28.07\Nomos\backend\src\main\java\com\mecanosfera\nomos\security\JwtService.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\config\SecurityConfig.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\AdminComentarioController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\ArchivoController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\ArticuloController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\AuthController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\AutorController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\ComentarioController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\PerfilController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\controller\UsuarioController.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\AprobacionRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\ArticuloEstadisticaResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\ArticuloRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\ArticuloResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\AutorResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\CambiarRolRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\ComentarioRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\ComentarioResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\LoginRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\LoginResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\PerfilResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\PerfilUpdateRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\RechazoRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\RegistroRequest.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\UsuarioAdminResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\dto\UsuarioResponse.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\exception\ArticuloNoEncontradoException.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\exception\EmailYaRegistradoException.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\exception\GlobalExceptionHandler.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\MecanosferaApplication.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\model\Articulo.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\model\Comentario.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\model\EstadoArticulo.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\model\EstadoComentario.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\model\Like.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\model\Rol.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\model\Usuario.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\repository\ArticuloRepository.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\repository\ComentarioRepository.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\repository\LikeRepository.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\repository\UsuarioRepository.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\security\CustomUserDetailsService.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\security\JwtAuthenticationFilter.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\security\JwtService.java
+C:\Users\Fede\Desktop\Nomos\git version\Caosmosis-web\backend\src\main\java\com\mecanosfera\nomos\service\PublicacionProgramadaService.java
