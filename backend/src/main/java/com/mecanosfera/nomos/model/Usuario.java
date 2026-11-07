@@ -47,4 +47,7 @@ public class Usuario {
 
     @Column
     private String twitter;
+
+    @Column(name = "recibir_novedades", nullable = false)
+    private boolean recibirNovedades = false;
 }

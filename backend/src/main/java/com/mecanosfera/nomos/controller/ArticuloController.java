@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +31,7 @@ import com.mecanosfera.nomos.model.Rol;
 import com.mecanosfera.nomos.model.Usuario;
 import com.mecanosfera.nomos.repository.ArticuloRepository;
 import com.mecanosfera.nomos.repository.UsuarioRepository;
+import com.mecanosfera.nomos.service.ArticuloPublicadoEvent;
 
 import jakarta.validation.Valid;
 
@@ -38,14 +41,18 @@ public class ArticuloController {
 
     private final ArticuloRepository articuloRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public ArticuloController(ArticuloRepository articuloRepository, UsuarioRepository usuarioRepository) {
+    public ArticuloController(ArticuloRepository articuloRepository, UsuarioRepository usuarioRepository,
+            ApplicationEventPublisher eventPublisher) {
         this.articuloRepository = articuloRepository;
         this.usuarioRepository = usuarioRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'ESCRITOR')")
+    @Transactional
     public ResponseEntity<ArticuloResponse> crear(@Valid @RequestBody ArticuloRequest request,
             Authentication authentication) {
 
@@ -62,6 +69,9 @@ public class ArticuloController {
         articulo.setEstado(autor.getRol() == Rol.ADMIN ? EstadoArticulo.PUBLICADO : EstadoArticulo.PENDIENTE);
 
         Articulo guardado = articuloRepository.save(articulo);
+        if (guardado.getEstado() == EstadoArticulo.PUBLICADO) {
+            eventPublisher.publishEvent(ArticuloPublicadoEvent.desde(guardado));
+        }
 
         return ResponseEntity.status(201).body(ArticuloResponse.desde(guardado));
     }
@@ -156,6 +166,7 @@ public class ArticuloController {
 
     @PutMapping("/{id}/aprobar")
     @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     public ResponseEntity<ArticuloResponse> aprobar(@PathVariable Long id,
             @RequestBody(required = false) AprobacionRequest request) {
 
@@ -176,6 +187,9 @@ public class ArticuloController {
         articulo.setComentarioRevision(null);
 
         Articulo actualizado = articuloRepository.save(articulo);
+        if (actualizado.getEstado() == EstadoArticulo.PUBLICADO) {
+            eventPublisher.publishEvent(ArticuloPublicadoEvent.desde(actualizado));
+        }
         return ResponseEntity.ok(ArticuloResponse.desde(actualizado));
     }
 

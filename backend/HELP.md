@@ -11,6 +11,16 @@ For further reference, please consider the following sections:
 * [Spring Security](https://docs.spring.io/spring-boot/4.1.0/reference/web/spring-security.html)
 * [Validation](https://docs.spring.io/spring-boot/4.1.0/reference/io/validation.html)
 
+### Email verification
+
+Account creation sends a six-digit verification code through Resend. Configure these backend environment variables:
+
+* `RESEND_API_KEY`: API key from the Resend dashboard.
+* `RESEND_FROM`: sender address on a verified domain, for example `Caosmosis <cuentas@tu-dominio.com>`.
+* `FRONTEND_URL`: public frontend base URL used in article announcement links.
+
+Codes expire after 10 minutes, allow five attempts, and can be requested again after one minute. Registration remains unavailable until email delivery is configured.
+
 ### Guides
 The following guides illustrate how to use some features concretely:
 
