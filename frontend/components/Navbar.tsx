@@ -25,13 +25,13 @@ export default function Navbar() {
       <nav className="nav-shell shell" aria-label="Navegación principal">
         <Link href="/" className="brand" aria-label="Caosmosis, inicio"><span className="brand-mark">c.</span><span>caosmosis</span></Link>
         <div className="desktop-nav"><Link href="/">Inicio</Link>{categoryLinks}</div>
-        <div className="nav-actions"><SearchBox compact /><Link href="#newsletter" className="button button-small">Suscribirme <span aria-hidden="true">↗</span></Link>
+        <div className="nav-actions"><SearchBox compact /><Link href="#suscripcion" className="button button-small">Suscribirme <span aria-hidden="true">↗</span></Link>
           {!cargando && (usuario ? <button className="nav-user" onClick={logout} aria-label={`Cerrar sesión de ${usuario.nombre}`}>{usuario.nombre.split(" ")[0]} · Salir</button> : <Link href="/login" className="login-link">Ingresar</Link>)}
         </div>
         <button className="menu-toggle" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} onClick={() => setMenuOpen((open) => !open)}><span /><span /></button>
       </nav>
       {menuOpen && <div id="mobile-navigation" className="mobile-nav shell">
-        <Link href="/" onClick={() => setMenuOpen(false)}>Inicio</Link>{categoryLinks}<Link href="/buscar" onClick={() => setMenuOpen(false)}>Buscar artículos</Link><Link href="#newsletter" onClick={() => setMenuOpen(false)}>Suscribirme al boletín</Link>
+        <Link href="/" onClick={() => setMenuOpen(false)}>Inicio</Link>{categoryLinks}<Link href="/buscar" onClick={() => setMenuOpen(false)}>Buscar artículos</Link><Link href="#suscripcion" onClick={() => setMenuOpen(false)}>Suscribirme</Link>
         {!cargando && usuario && <><span className="mobile-greeting">Hola, {usuario.nombre}</span><button onClick={() => { logout(); setMenuOpen(false); }}>Cerrar sesión</button></>}
         {!cargando && !usuario && <Link href="/login" onClick={() => setMenuOpen(false)}>Ingresar</Link>}
         {managementUser && <><Link href="/admin/articulos/nuevo" onClick={() => setMenuOpen(false)}>Escribir una nota</Link>{usuario?.rol === "ADMIN" && <Link href="/admin/comentarios" onClick={() => setMenuOpen(false)}>Moderar comentarios</Link>}</>}

@@ -11,7 +11,7 @@ export default function ArticleCard({ article, featured = false }: { article: Ar
     <motion.article whileHover={{ y: -5 }} transition={{ duration: 0.25 }} className={`article-card group ${featured ? "article-card-featured" : ""}`}>
       <Link href={articleHref(article)} className="block" aria-label={`Leer: ${article.titulo}`}>
         <div className="article-card-image">
-          <ArticleImage src={article.imagenUrl} alt="" priority={featured} />
+          <ArticleImage src={article.imagenUrl} alt={`Portada: ${article.titulo}`} priority={featured} />
           <span className="category-pill">{article.categoria}</span>
         </div>
         <div className="article-card-copy">

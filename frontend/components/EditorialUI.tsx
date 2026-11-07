@@ -25,10 +25,10 @@ export function NewsletterForm({ compact = false }: { compact?: boolean }) {
   const [sent, setSent] = useState(false);
   return (
     <form className={`newsletter-form ${compact ? "newsletter-form-compact" : ""}`} onSubmit={(event) => { event.preventDefault(); setSent(true); }}>
-      {sent ? <p role="status" className="newsletter-success">Gracias por tu interés. La suscripción estará disponible pronto.</p> : <>
+      {sent ? <p role="status" className="newsletter-success">Gracias por tu interés. El boletín estará disponible pronto.</p> : <>
         <label className="sr-only" htmlFor={compact ? "newsletter-footer" : "newsletter-hero"}>Tu correo electrónico</label>
         <input id={compact ? "newsletter-footer" : "newsletter-hero"} type="email" required placeholder="Tu correo electrónico" />
-        <MotionButton type="submit" className="button button-dark">Suscribirme <span aria-hidden="true">↗</span></MotionButton>
+        <MotionButton type="submit" className="button button-dark">Recibir novedades <span aria-hidden="true">↗</span></MotionButton>
       </>}
     </form>
   );
