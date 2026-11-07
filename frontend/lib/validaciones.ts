@@ -4,9 +4,11 @@ export const registroSchema = z.object({
   nombre: z.string().min(1, "El nombre es obligatorio"),
   email: z.string().min(1, "El email es obligatorio").email("Email inválido"),
   password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
+  recibirNovedades: z.boolean().default(false),
 });
 
 export type RegistroFormData = z.infer<typeof registroSchema>;
+export type RegistroFormInput = z.input<typeof registroSchema>;
 
 export const loginSchema = z.object({
   email: z.string().min(1, "El email es obligatorio").email("Email inválido"),

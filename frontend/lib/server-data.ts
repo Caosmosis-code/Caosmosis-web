@@ -31,7 +31,7 @@ async function readApi<T>(path: string, revalidate = 60): Promise<T | null> {
 
 export async function getArticles(): Promise<EditorialArticle[]> {
   const articles = await readApi<Articulo[]>("/api/articulos");
-  return articles ?? sampleArticles;
+  return articles ?? (process.env.NODE_ENV === "development" ? sampleArticles : []);
 }
 
 function idFromSlug(slug: string): number | null {
@@ -44,6 +44,7 @@ export async function getArticle(slug: string): Promise<EditorialArticle | null>
   if (id !== null) {
     const article = await readApi<Articulo>(`/api/articulos/${id}`, 0);
     if (article) return article;
+    if (process.env.NODE_ENV !== "development") return null;
     return sampleArticles.find((item) => item.id === id || slugify(item.titulo) === slug) ?? null;
   }
   const articles = await getArticles();
@@ -58,7 +59,9 @@ export async function getAuthor(slug: string): Promise<{ author: Author; article
       readApi<Articulo[]>(`/api/autores/${id}/articulos`),
     ]);
     if (author && articles) return { author, articles };
-    const sample = sampleArticles.filter((article) => article.autorId === id);
+    const sample = process.env.NODE_ENV === "development"
+      ? sampleArticles.filter((article) => article.autorId === id)
+      : [];
     if (sample.length) {
       return {
         author: { id, nombre: sample[0].autorNombre, bio: "Escribimos para conectar ideas, cultura y vida cotidiana." },

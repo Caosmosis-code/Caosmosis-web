@@ -11,6 +11,7 @@ interface Perfil {
   bio: string | null;
   instagram: string | null;
   twitter: string | null;
+  recibirNovedades: boolean;
 }
 
 export default function PerfilPage() {
@@ -19,6 +20,7 @@ export default function PerfilPage() {
   const [bio, setBio] = useState("");
   const [instagram, setInstagram] = useState("");
   const [twitter, setTwitter] = useState("");
+  const [recibirNovedades, setRecibirNovedades] = useState(false);
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState<string | null>(null);
@@ -35,6 +37,7 @@ export default function PerfilPage() {
         setBio(p.bio || "");
         setInstagram(p.instagram || "");
         setTwitter(p.twitter || "");
+        setRecibirNovedades(p.recibirNovedades);
       })
       .finally(() => setCargando(false));
   }, [usuario]);
@@ -47,7 +50,7 @@ export default function PerfilPage() {
     try {
       await apiFetch("/api/usuarios/me", {
         method: "PUT",
-        body: JSON.stringify({ bio, instagram, twitter }),
+        body: JSON.stringify({ bio, instagram, twitter, recibirNovedades }),
       });
       setMensaje("Perfil actualizado.");
     } catch (err) {
@@ -94,6 +97,16 @@ export default function PerfilPage() {
             placeholder="tuusuario"
           />
         </div>
+
+        <label className="flex items-start gap-3 text-sm leading-5">
+          <input
+            type="checkbox"
+            checked={recibirNovedades}
+            onChange={(event) => setRecibirNovedades(event.target.checked)}
+            className="mt-1"
+          />
+          <span>Recibir avisos por correo cuando se publiquen nuevos artículos.</span>
+        </label>
 
         {mensaje && <p className="text-brass text-sm">{mensaje}</p>}
         {error && <p className="text-rust text-sm">{error}</p>}
