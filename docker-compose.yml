@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 services:
   db:
     image: postgres:16
@@ -13,4 +14,21 @@ services:
       - db_data:/var/lib/postgresql/data
 
 volumes:
+=======
+services:
+  db:
+    image: postgres:16
+    container_name: mecanosfera-db
+    restart: always
+    environment:
+      POSTGRES_USER: mecanosfera
+      POSTGRES_PASSWORD: mecanosfera123
+      POSTGRES_DB: mecanosfera_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
   db_data:

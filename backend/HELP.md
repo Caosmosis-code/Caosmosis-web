@@ -17,6 +17,10 @@ Account creation sends a six-digit verification code through Resend. Configure t
 
 * `RESEND_API_KEY`: API key from the Resend dashboard.
 * `RESEND_FROM`: sender address on a verified domain, for example `Caosmosis <cuentas@tu-dominio.com>`.
+<<<<<<< HEAD
+=======
+* `FRONTEND_URL`: public frontend base URL used in article announcement links.
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
 
 Codes expire after 10 minutes, allow five attempts, and can be requested again after one minute. Registration remains unavailable until email delivery is configured.
 

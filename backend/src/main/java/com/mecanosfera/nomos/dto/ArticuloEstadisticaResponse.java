@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.mecanosfera.nomos.dto;
 
 import java.time.LocalDateTime;
@@ -27,4 +28,35 @@ public class ArticuloEstadisticaResponse {
         dto.setCantidadLikes(cantidadLikes);
         return dto;
     }
+=======
+package com.mecanosfera.nomos.dto;
+
+import java.time.LocalDateTime;
+
+import com.mecanosfera.nomos.model.Articulo;
+
+import lombok.Data;
+
+@Data
+public class ArticuloEstadisticaResponse {
+    private Long id;
+    private String titulo;
+    private String categoria;
+    private String estado;
+    private LocalDateTime fechaPublicacion;
+    private long cantidadComentarios;
+    private int cantidadLikes;
+
+    public static ArticuloEstadisticaResponse desde(Articulo articulo, long cantidadComentarios, int cantidadLikes) {
+        ArticuloEstadisticaResponse dto = new ArticuloEstadisticaResponse();
+        dto.setId(articulo.getId());
+        dto.setTitulo(articulo.getTitulo());
+        dto.setCategoria(articulo.getCategoria());
+        dto.setEstado(articulo.getEstado().name());
+        dto.setFechaPublicacion(articulo.getFechaPublicacion());
+        dto.setCantidadComentarios(cantidadComentarios);
+        dto.setCantidadLikes(cantidadLikes);
+        return dto;
+    }
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
 }

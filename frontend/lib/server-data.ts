@@ -31,7 +31,11 @@ async function readApi<T>(path: string, revalidate = 60): Promise<T | null> {
 
 export async function getArticles(): Promise<EditorialArticle[]> {
   const articles = await readApi<Articulo[]>("/api/articulos");
+<<<<<<< HEAD
   return articles ?? sampleArticles;
+=======
+  return articles ?? (process.env.NODE_ENV === "development" ? sampleArticles : []);
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
 }
 
 function idFromSlug(slug: string): number | null {
@@ -44,6 +48,10 @@ export async function getArticle(slug: string): Promise<EditorialArticle | null>
   if (id !== null) {
     const article = await readApi<Articulo>(`/api/articulos/${id}`, 0);
     if (article) return article;
+<<<<<<< HEAD
+=======
+    if (process.env.NODE_ENV !== "development") return null;
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
     return sampleArticles.find((item) => item.id === id || slugify(item.titulo) === slug) ?? null;
   }
   const articles = await getArticles();
@@ -58,7 +66,13 @@ export async function getAuthor(slug: string): Promise<{ author: Author; article
       readApi<Articulo[]>(`/api/autores/${id}/articulos`),
     ]);
     if (author && articles) return { author, articles };
+<<<<<<< HEAD
     const sample = sampleArticles.filter((article) => article.autorId === id);
+=======
+    const sample = process.env.NODE_ENV === "development"
+      ? sampleArticles.filter((article) => article.autorId === id)
+      : [];
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
     if (sample.length) {
       return {
         author: { id, nombre: sample[0].autorNombre, bio: "Escribimos para conectar ideas, cultura y vida cotidiana." },

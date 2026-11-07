@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.mecanosfera.nomos.dto;
 
 import jakarta.validation.constraints.Email;
@@ -23,4 +24,33 @@ public class RegistroRequest {
     @NotBlank(message = "El código de verificación es obligatorio")
     @Pattern(regexp = "\\d{6}", message = "El código debe tener 6 dígitos")
     private String codigoVerificacion;
+=======
+package com.mecanosfera.nomos.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+@Data
+public class RegistroRequest {
+
+    @NotBlank(message = "El nombre es obligatorio")
+    private String nombre;
+
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "El email no tiene un formato válido")
+    private String email;
+
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+    private String password;
+
+    @NotBlank(message = "El código de verificación es obligatorio")
+    @Pattern(regexp = "\\d{6}", message = "El código debe tener 6 dígitos")
+    private String codigoVerificacion;
+
+    private boolean recibirNovedades;
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Cookies from "js-cookie";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "development" ? "http://localhost:8080" : "");
@@ -54,3 +55,61 @@ export class ApiError extends Error {
     this.body = body;
   }
 }
+=======
+import Cookies from "js-cookie";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "development" ? "http://localhost:8080" : "");
+
+export function getApiUrl(): string {
+  if (!API_URL) {
+    throw new Error("Falta configurar NEXT_PUBLIC_API_URL para este entorno.");
+  }
+  return API_URL;
+}
+
+interface ApiOptions extends RequestInit {
+  skipAuth?: boolean;
+}
+
+export async function apiFetch<T>(endpoint: string, options: ApiOptions = {}): Promise<T> {
+  const { skipAuth, headers, ...rest } = options;
+
+  const token = Cookies.get("token");
+
+  const finalHeaders: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(headers as Record<string, string>),
+  };
+
+  if (token && !skipAuth) {
+    finalHeaders["Authorization"] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${getApiUrl()}${endpoint}`, {
+    ...rest,
+    headers: finalHeaders,
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({}));
+    throw new ApiError(response.status, errorBody);
+  }
+
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
+  return response.json();
+}
+
+export class ApiError extends Error {
+  status: number;
+  body: any;
+
+  constructor(status: number, body: any) {
+    super(body?.mensaje || "Error en la petición");
+    this.status = status;
+    this.body = body;
+  }
+}
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9

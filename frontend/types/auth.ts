@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export interface Usuario {
   id: number;
   nombre: string;
@@ -20,4 +21,28 @@ export interface RegistroPayload {
 export interface LoginPayload {
   email: string;
   password: string;
+=======
+export interface Usuario {
+  id: number;
+  nombre: string;
+  email: string;
+  rol: "ADMIN" | "LECTOR" | "ESCRITOR";
+}
+
+export interface LoginResponse {
+  token: string;
+  usuario: Usuario;
+}
+
+export interface RegistroPayload {
+  nombre: string;
+  email: string;
+  password: string;
+  codigoVerificacion: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+>>>>>>> 40ba4cc8b7a8079df02ef3c3c0534468ff47d7b9
 }
