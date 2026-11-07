@@ -1,0 +1,16 @@
+export const CATEGORIAS = [
+	"Actualidad",
+	"Política",
+	"Economía",
+	"Sociedad",
+	"Cultura",
+	"Ciencia",
+	"Tecnología",
+	"Ambiente",
+	"Salud",
+	"Educación",
+	"Internacional",
+	"Historia",
+	"Opinión",
+	"Deportes",
+];
